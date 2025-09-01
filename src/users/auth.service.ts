@@ -17,6 +17,7 @@ export class AuthService {
   constructor(private userservice: UsersService) {}
   async signup(email: string, password: any) {
     // see whether email is exist are not
+    console.log('hellooooooooooooo');
     const users = await this.userservice.find(email);
     if (users.length) {
       throw new BadRequestException(' email is already exists');
@@ -32,9 +33,9 @@ export class AuthService {
 
     //4. Adding the  salt to the hashed value
     const result = salt + '.' + hashed_password;
-
+    console.log(result);
     // 5.  and storing that hashed value and slat with the seperater
-    const user = this.userservice.create(email, result);
+    const user = await this.userservice.create(email, result);
 
     return user;
   }
@@ -48,7 +49,7 @@ export class AuthService {
       if (!(storedhash == hashed_value.toString('hex'))) {
         throw new NotFoundException('Incorrect password');
       } else {
-        return 'sucessfully login';
+        return users;
       }
     }
   }
