@@ -10,6 +10,7 @@ import {
   ClassSerializerInterceptor,
   UseInterceptors,
   Session,
+  UseGuards,
 } from '@nestjs/common';
 import { Post, Get } from '@nestjs/common';
 import { UsersDTO } from './users.dto';
@@ -21,6 +22,7 @@ import { Show_userDTO } from './show_users.dto';
 import { Serlization } from '../interceptor/serlization.interceptor';
 import { AuthService } from './auth.service';
 import { Current_user } from './decorators/current_decorator';
+import { AuthGuards } from 'src/guards/auth.guards';
 @Controller('auth')
 @Serlization(Show_userDTO)
 export class UsersController {
@@ -59,6 +61,7 @@ export class UsersController {
   }
 
   @Get('whoiam')
+  @UseGuards(AuthGuards)
   who_i_am(@Current_user() user: any) {
     console.log(user);
     return user;
